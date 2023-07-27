@@ -4,29 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fetch API Sandbox</title>
+    <!-- CSS link for Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
-    <button id="getText">Get Text</button>
-    <button id="getItems">Get JSON</button>
-    <button id="getPosts">Get API Items</button>
+    <div class="container">
+        <h1 class="display-4 mb-4">Fetch API Sandbox</h1>
+    </div>
+
+    <div class="d-flex">
+        <button class="btn btn-secondary mr-4" id="getText">Get Text</button>
+        <button class="btn btn-primary mr-4" id="getItems">Get JSON</button>
+        <button class="btn btn-warning mr-4" id="getPosts">Get API Data</button>
+    </div>
 
     <hr>
+
+    <!-- <h2 class="display-6 mb-3">View results</h2> -->
     <div id="output"></div>
+
+    <hr>
+
+    <h1>Add item to database</h1>
     <form id="addPosts">
-        <div>
-            <input type="text" id="title" placeholder="Title">
+        <div class="form-group">
+            <input type="text" id="title" class="form-control" placeholder="Title">
         </div>
-        <div>
-            <input type="text" id="description" placeholder="Description">
+        <div class="form-group">
+            <input type="text" id="description" class="form-control" placeholder="Description">
         </div>
-        <div>
-            <input type="text" id="createdby" placeholder="Created by">
+        <div class="form-group">
+            <input type="text" id="createdby" class="form-control" placeholder="Created by">
         </div>
+        <br>
         <div>
-            <input type="submit" value="Submit" placeholder="Created by">
+            <input type="submit" class="btn btn-secondary mr-4" value="Submit" placeholder="Created by">
         </div>
 
     </form>
+    </div>
 
     <script>
         document.getElementById('getText').addEventListener('click', getText);
@@ -52,14 +69,14 @@
                 // console.log(data);
                 data.forEach(function(item){
                     output+=`
-                    <ul>
-                        <li>ID: ${item.ID} </li>
-                        <li>Title: ${item.TITLE} </li>
-                        <li>Description: ${item.DESCRIPTION} </li>
-                        <li>Deadline: ${item.DEADLINE} </li>
-                        <li>Created by: ${item.CREATEDBY} </li>
-                        <li>Created on: ${item.CREATEDON} </li>
-                        <li>Status: ${item.STATUS} </li>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item">ID: ${item.ID} </li>
+                        <li class="list-group-item">Title: ${item.TITLE} </li>
+                        <li class="list-group-item">Description: ${item.DESCRIPTION} </li>
+                        <li class="list-group-item">Deadline: ${item.DEADLINE} </li>
+                        <li class="list-group-item">Created by: ${item.CREATEDBY} </li>
+                        <li class="list-group-item">Created on: ${item.CREATEDON} </li>
+                        <li class="list-group-item">Status: ${item.STATUS} </li>
                     </ul>
                     `;
                 });
@@ -79,7 +96,7 @@
                 data.items.forEach(function (post) {
                     // will need to change status view later
                     output += `
-                    <div>
+                    <div class="card card-body mb-3">
                         <h3>${post.TITLE}</h3>
                         <p>${post.DESCRIPTION}</p>
                         <p>${post.CREATEDBY}</p>
@@ -111,7 +128,6 @@
             })
             .then((res) => res.json())
             .then((data) => console.log(data))
-
         }
 
     </script>
