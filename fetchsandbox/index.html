@@ -8,11 +8,16 @@
 </head>
 <body>
     <button id="getText">Get Text</button>
+    <button id="getItems">Get JSON</button>
+    <button id="getPosts">Get API Items</button>
 
     <div id="output"></div>
 
     <script>
         document.getElementById('getText').addEventListener('click', getText);
+        document.getElementById('getItems').addEventListener('click', getItems);
+        document.getElementById('getPosts').addEventListener('click', getPosts);
+
 
         function getText(){
             // fetch('sample.txt')
@@ -36,6 +41,49 @@
             .catch((err) => console.log(err))
         };
 
+        function getItems(){
+            fetch('items.json')
+            .then((res => res.json()))
+            .then((data) => {
+                let output = '<h2>Items</h2>';
+                // console.log(data);
+                data.forEach(function(item){
+                    output+=`
+                    <ul>
+                        <li>ID: ${item.ID} </li>
+                        <li>Title: ${item.TITLE} </li>
+                        <li>Description: ${item.DESCRIPTION} </li>
+                        <li>Deadline: ${item.DEADLINE} </li>
+                        <li>Created by: ${item.CREATEDBY} </li>
+                        <li>Created on: ${item.CREATEDON} </li>
+                        <li>Status: ${item.STATUS} </li>
+                    </ul>
+                    `;
+                });
+                document.getElementById('output').innerHTML = output;
+            })
+            .catch((err) => console.log(err))
+        };
+
+        function getPosts(){
+            fetch('http://localhost:1337/items')
+            .then((res => res.json()))
+            .then((data) => {
+                let output = '<h2>API Items</h2>';
+                // console.log(data);
+                data.forEach(function(post){
+                    output+=`
+                    <div>
+                        <h3>${post.TITLE}</h3>
+                        <p>${post.DESCRIPTION}</p>
+                        <p>Complete? ${post.STATUS}</p>
+                        </div>
+                    `
+                });
+                document.getElementById('output').innerHTML = output;
+            })
+            .catch((err) => console.log(err))
+        };
 
     </script>
 </body>

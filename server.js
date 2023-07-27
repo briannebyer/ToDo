@@ -1,11 +1,16 @@
 // import required modules
 const express = require("express");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 // import db functions from separate module
 const db = require("./db/items");
 
 // create instance of Express app
 const app = express();
+
+// use cors, to allow requests from different domains
+// NOTE: be wary of using method in production environments!
+app.use(cors());
 
 // use bodyParser, express middleware, to parse JSON and URL-encoded
 app.use(bodyParser.urlencoded({extended: false}));
