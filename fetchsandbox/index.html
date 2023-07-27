@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fetch API Sandbox</title>
-    <!-- Add any additional meta tags, stylesheets, or scripts here -->
 </head>
 <body>
     <button id="getText">Get Text</button>
@@ -13,7 +12,7 @@
 
     <hr>
     <div id="output"></div>
-    <form id="addItem">
+    <form id="addPosts">
         <div>
             <input type="text" id="title" placeholder="Title">
         </div>
@@ -33,6 +32,7 @@
         document.getElementById('getText').addEventListener('click', getText);
         document.getElementById('getItems').addEventListener('click', getItems);
         document.getElementById('getPosts').addEventListener('click', getPosts);
+        document.getElementById('addPosts').addEventListener('submit', addPosts);
 
 
         function getText(){
@@ -91,6 +91,27 @@
             } catch (err) {
                 console.error(err);
             }
+        }
+
+        function addPosts(e) {
+            // stop submitting to a file
+            e.preventDefault();
+            
+            let title = document.getElementById('title').value;
+            let description = document.getElementById('description').value;
+            let createdby = document.getElementById('createdby').value;
+            
+            fetch('http://localhost:1337/items', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-type': 'application/json'
+                },
+                body:JSON.stringify({title:title, description:description, createdby:createdby})
+            })
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+
         }
 
     </script>
