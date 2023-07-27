@@ -11,7 +11,23 @@
     <button id="getItems">Get JSON</button>
     <button id="getPosts">Get API Items</button>
 
+    <hr>
     <div id="output"></div>
+    <form id="addItem">
+        <div>
+            <input type="text" id="title" placeholder="Title">
+        </div>
+        <div>
+            <input type="text" id="description" placeholder="Description">
+        </div>
+        <div>
+            <input type="text" id="createdby" placeholder="Created by">
+        </div>
+        <div>
+            <input type="submit" value="Submit" placeholder="Created by">
+        </div>
+
+    </form>
 
     <script>
         document.getElementById('getText').addEventListener('click', getText);
@@ -20,19 +36,6 @@
 
 
         function getText(){
-            // fetch('sample.txt')
-            // .then(function(res){
-            //     // returns sample text
-            //     return res.text()
-            // .then(function(data){
-            //     console.log(data);
-            // })
-            // });
-            // below is the same as above!
-        //     fetch('sample.txt')
-        //     .then((res => res.text()))
-        //     .then((data) => console.log(data))
-        // };
             fetch('sample.txt')
             .then((res => res.text()))
             .then((data) => {
@@ -65,25 +68,30 @@
             .catch((err) => console.log(err))
         };
 
-        function getPosts(){
-            fetch('http://localhost:1337/items')
-            .then((res => res.json()))
-            .then((data) => {
+        async function getPosts() {
+            try {
+                const response = await fetch('http://localhost:1337/items');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
                 let output = '<h2>API Items</h2>';
-                // console.log(data);
-                data.forEach(function(post){
-                    output+=`
+                data.items.forEach(function (post) {
+                    // will need to change status view later
+                    output += `
                     <div>
                         <h3>${post.TITLE}</h3>
                         <p>${post.DESCRIPTION}</p>
+                        <p>${post.CREATEDBY}</p>
                         <p>Complete? ${post.STATUS}</p>
-                        </div>
-                    `
+                    </div>
+                    `;
                 });
                 document.getElementById('output').innerHTML = output;
-            })
-            .catch((err) => console.log(err))
-        };
+            } catch (err) {
+                console.error(err);
+            }
+        }
 
     </script>
 </body>
