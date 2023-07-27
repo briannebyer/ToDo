@@ -37,6 +37,10 @@
         <div class="form-group">
             <input type="text" id="createdby" class="form-control" placeholder="Created by">
         </div>
+        <div class="form-group">
+            <input type="text" id="deadline" class="form-control" placeholder="Deadline">
+        </div>
+        <p><i>Must ensure deadline is in the following format "YYYY-MM-DD"</i></p>
         <br>
         <div>
             <input type="submit" class="btn btn-secondary mr-4" value="Submit" placeholder="Created by">
@@ -94,13 +98,13 @@
                 const data = await response.json();
                 let output = '<h2>API Items</h2>';
                 data.items.forEach(function (post) {
-                    // will need to change status view later
+                    const statusText = post.STATUS === 1 ? 'Yes' : 'No';
                     output += `
                     <div class="card card-body mb-3">
                         <h3>${post.TITLE}</h3>
                         <p>${post.DESCRIPTION}</p>
                         <p>${post.CREATEDBY}</p>
-                        <p>Complete? ${post.STATUS}</p>
+                        <p>Complete? ${statusText}</p>
                     </div>
                     `;
                 });
@@ -117,6 +121,15 @@
             let title = document.getElementById('title').value;
             let description = document.getElementById('description').value;
             let createdby = document.getElementById('createdby').value;
+
+            // get current date and time
+            let currentDate = new Date();
+            // format date
+            let createdon = currentDate.toISOString().slice(0,19).replace('T', ' ');
+            
+            let deadline = document.getElementById('deadline').value;
+            // set status as incomplete by default
+            let status = 0;
             
             fetch('http://localhost:1337/items', {
                 method: 'POST',
@@ -124,7 +137,7 @@
                     'Accept': 'application/json, text/plain, */*',
                     'Content-type': 'application/json'
                 },
-                body:JSON.stringify({title:title, description:description, createdby:createdby})
+                body:JSON.stringify({title:title, description:description, createdby:createdby, createdon:createdon, deadline:deadline, status:status})
             })
             .then((res) => res.json())
             .then((data) => console.log(data))
